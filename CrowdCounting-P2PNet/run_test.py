@@ -50,6 +50,8 @@ def get_args_parser():
     
     parser.add_argument('--cpu_test', type=bool, default=False, help='Wheter or not to run the test on gpu')
 
+    parser.add_argument('--save_json', type=bool, default=False, help='Wheter or not to save json files and output predictions')
+
     return parser
 
 def main(args, debug=False):
@@ -81,18 +83,18 @@ def main(args, debug=False):
 
     create_table = False
     if "Towards" in args.dataset:
-        annot_path = "../FineGrainedCountingCV/Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations"
+        annot_path = "./DATA_ROOT_TOWARDS/eval_test_annotations"
         images_path = "./DATA_ROOT_TOWARDS/eval_test"
     elif "Waiting" in args.dataset:
-        annot_path = "../FineGrainedCountingCV/Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Waiting_vs_Notwaiting/annotations"
+        annot_path = "./DATA_ROOT_WAITING/eval_test_annotations"
         images_path = "./DATA_ROOT_WAITING/eval_test"
     elif "Standing" in args.dataset:
         create_table = True
-        annot_path = "../FineGrainedCountingCV/Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Standing_vs_Sitting/annotations"
+        annot_path = "./DATA_ROOT/eval_test_annotations"
         images_path = "./DATA_ROOT/eval_test"
         
     elif "Violent" in args.dataset:
-        annot_path = "../FineGrainedCountingCV/Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Violent_vs_Nonviolent/annotations"
+        annot_path = "./DATA_ROOT_VIOLENT/eval_test_annotations"
         images_path = "./DATA_ROOT_VIOLENT/eval_test"
     else:
         print("You didnt provide a vilad dataset")
@@ -342,38 +344,40 @@ def main(args, debug=False):
     #Saving metrics
     json_object = json.dumps(results)
     
-    if "Towards" in annot_path:
-        # Writing to sample.json
-        with open("../TowardsResults/{name}.json".format(name=args.weight_path.split("/")[1]), "w") as outfile:
-            outfile.write(json_object)
-        if saving == True:
-            np.save("../TowardsOutputs/{theimg}_P2P_Group1.npy".format(theimg=the_img[:-4]), save_group1)
-            np.save("../TowardsOutputs/{theimg}_P2P_Group2.npy".format(theimg=the_img[:-4]), save_group2)
-            
-    if "Waiting" in annot_path:
-        # Writing to sample.json
-        with open("../WaitingResults/{name}.json".format(name=args.weight_path.split("/")[1]), "w") as outfile:
-            outfile.write(json_object)
-        if saving == True:
-            np.save("../WaitingOutputs/{theimg}_P2P_Group1.npy".format(theimg=the_img[:-4]), save_group1)
-            np.save("../WaitingOutputs/{theimg}_P2P_Group2.npy".format(theimg=the_img[:-4]), save_group2)
-    
-    if "Standing" in annot_path:
-        # Writing to sample.json
-        with open("../StandingResults/{name}.json".format(name=args.weight_path.split("/")[1]), "w") as outfile:
-            outfile.write(json_object)
-        if saving == True:
-            np.save("../StandingOutputs/{theimg}_P2P_Group1.npy".format(theimg=the_img[:-4]), save_group1)
-            np.save("../StandingOutputs/{theimg}_P2P_Group2.npy".format(theimg=the_img[:-4]), save_group2)
+    if args.save_json: 
 
-            
-    if "Violent" in annot_path:
-        # Writing to sample.json
-        with open("../ViolentResults/{name}.json".format(name=args.weight_path.split("/")[1]), "w") as outfile:
-            outfile.write(json_object)
-        if saving == True:
-            np.save("../ViolentOutputs/{theimg}_P2P_Group1.npy".format(theimg=the_img[:-4]), save_group1)
-            np.save("../ViolentOutputs/{theimg}_P2P_Group2.npy".format(theimg=the_img[:-4]), save_group2)
+        if "Towards" in annot_path:
+            # Writing to sample.json
+            with open("../TowardsResults/{name}.json".format(name=args.weight_path.split("/")[1]), "w") as outfile:
+                outfile.write(json_object)
+            if saving == True:
+                np.save("../TowardsOutputs/{theimg}_P2P_Group1.npy".format(theimg=the_img[:-4]), save_group1)
+                np.save("../TowardsOutputs/{theimg}_P2P_Group2.npy".format(theimg=the_img[:-4]), save_group2)
+                
+        if "Waiting" in annot_path:
+            # Writing to sample.json
+            with open("../WaitingResults/{name}.json".format(name=args.weight_path.split("/")[1]), "w") as outfile:
+                outfile.write(json_object)
+            if saving == True:
+                np.save("../WaitingOutputs/{theimg}_P2P_Group1.npy".format(theimg=the_img[:-4]), save_group1)
+                np.save("../WaitingOutputs/{theimg}_P2P_Group2.npy".format(theimg=the_img[:-4]), save_group2)
+        
+        if "Standing" in annot_path:
+            # Writing to sample.json
+            with open("../StandingResults/{name}.json".format(name=args.weight_path.split("/")[1]), "w") as outfile:
+                outfile.write(json_object)
+            if saving == True:
+                np.save("../StandingOutputs/{theimg}_P2P_Group1.npy".format(theimg=the_img[:-4]), save_group1)
+                np.save("../StandingOutputs/{theimg}_P2P_Group2.npy".format(theimg=the_img[:-4]), save_group2)
+
+                
+        if "Violent" in annot_path:
+            # Writing to sample.json
+            with open("../ViolentResults/{name}.json".format(name=args.weight_path.split("/")[1]), "w") as outfile:
+                outfile.write(json_object)
+            if saving == True:
+                np.save("../ViolentOutputs/{theimg}_P2P_Group1.npy".format(theimg=the_img[:-4]), save_group1)
+                np.save("../ViolentOutputs/{theimg}_P2P_Group2.npy".format(theimg=the_img[:-4]), save_group2)
 
     
     #print(results)
