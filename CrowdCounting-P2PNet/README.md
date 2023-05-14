@@ -47,6 +47,6 @@ This script handles the training and evaluating step as well as a function to vi
 
 Script that performs the training of the network. Calls all the helper functions descriped above to perform training. Close to what is found in https://github.com/TencentYoutuResearch/CrowdCounting-P2PNet
 
-### run_test
+### run_test.py
 
 Script that performs the evaluation of the network. Calls all the helper functions descriped above to perform evaluation. Close to what is found in https://github.com/TencentYoutuResearch/CrowdCounting-P2PNet, but modified to calculate new metrics as relative CMAE and patch CMAE. Also some modifications is done to visualize and save the results.
