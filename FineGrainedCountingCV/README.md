@@ -56,10 +56,10 @@ To train on different datasets change, *--train_json*, *--val_json*, *--test_jso
 
 ## Testing
 
-1. From this root make a folder that corresponds to the name of the model in TestResults e.g.:
-'''
+1. From this root make a folder that corresponds to the name of the model in a new folder called TestResults e.g.:
+```
 ./TestResults/FirstRun_Towards
-'''
+```
 
 2. Run the below scripts, each with a corresponding folder .
 #### No modifications
