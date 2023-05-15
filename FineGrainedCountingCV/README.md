@@ -18,14 +18,55 @@ To reproduce these results:
 | Standing/Sitting   | No modifications | 7.35       | **6.29**   | **6.82**| **0.578**   | **0.192**   | 7.75  |
 |                    | SkipConnections | 8.27       | 6.31       | 7.31   | 0.650       | 0.198       | 8.07  |
 |                    | CBAM            | **7.07**   | 7.60       | 7.33   | 0.792       | 0.203       | **7.67** |
-| Violent/Nonviolent | No modifications | 5.40       | **3.35**   | 4.38   | **0.679**   | **0.116**   | 6.85  |
+| Violent/Nonviolent | No modifications | 5.40       | 3.35   | 4.38   |0.679   | **0.116**   | 6.85  |
 |                    | SkipConnections | **4.02**   | 3.82       | **3.92**| **0.648**   | 0.135       | **5.02** |
-|                    | CBAM            | 5.13       | **3.28**   | 4.20   | 0.740       | **0.127**   | **5.13** |
+|                    | CBAM            | 5.13       | **3.28**   | 4.20   | 0.740       | 0.127   | 5.13 |
 | Waiting/Notwaiting | No modifications | **2.54**   | 2.59       | **2.57**| 0.368       | **0.077**   | 2.15  |
 |                    | SkipConnections | 2.79       | **2.58**   | 2.68   | **0.361**   | 0.085       | 2.73  |
-|                    | CBAM            | **2.56**   | 2.59       | **2.58**| 0.383       | **0.078**   | 2.07  |
+|                    | CBAM            | 2.56   | 2.59       | 2.58 | 0.383       | 0.078   | **2.07**  |
 
 
+## Training
 Follow the following steps:
 
-1. Pull the full repository 
+1. Make sure you have followed the steps presented in the ReadMe in the main directory:
+
+2. Train the model by calling the following script:
+#### No modifications:
+```
+python exp.py --name FirstRun_Towards --att --prop --final_loss --count_loss --seg_loss --seg_w 100 --net vgg --soft --seg --model vgg --output_cn 2 --train_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/train.json --val_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/val.json --test_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/test.json --display_freq 100 --lr 0.00001 --downsample 8 --dmap_type fix4 --input_cn 3 --seg_lr 0.00001 --train_counter --hourglass_iter 3 --weight 10 --seg_gt_act multi
+```
+#### SkipConnections
+```
+python expSkipConnection.py --name FirstRun_SkipConnection_Towards --att --prop --final_loss --count_loss --seg_loss --seg_w 100 --net vgg --soft --seg --model vgg --output_cn 2 --train_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/train.json --val_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/val.json --test_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/test.json --display_freq 100 --lr 0.00001 --downsample 8 --dmap_type fix4 --input_cn 3 --seg_lr 0.00001 --train_counter --hourglass_iter 3 --weight 10 --seg_gt_act multi
+```
+#### CBAM
+```
+python expAttention.py --name FirstRun_Attention_Towards --att --prop --final_loss --count_loss --seg_loss --seg_w 100 --net vgg --soft --seg --model vgg --output_cn 2 --train_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/train.json --val_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/val.json --test_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/test.json --display_freq 100 --lr 0.00001 --downsample 8 --dmap_type fix4 --input_cn 3 --seg_lr 0.00001 --train_counter --hourglass_iter 3 --weight 10 --seg_gt_act multi
+```
+
+To train on different datasets change, *--train_json*, *--val_json*, *--test_json* to the path of the other datasets. The datasets are given below, Note, *--dmap_type* should be in acordance with the below table as well. *--lr* is in accordance with the table below for SkipConnections and CBAM, yet for no modifications *--lr*=0.00001:
+
+| Dataset               | Towards_vs_Away | Standing_vs_Sitting | Violent_vs_Nonviolent | Waiting_vs_Notwaiting |
+|-----------------------|-----------------|---------------------|-----------------------|-----------------------|
+| *--dmap_type*       | fix4         | fix16                  | fix4                  | fix16                 |
+| *--lr*              | 0.00001         | 0.000002               | 0.000002                 | 0.00001                 |
+
+
+## Testing
+
+1. From this root make the following folders:
+'''
+./TestResults/FirstRun_Towards
+'''
+
+2. Run the below scripts, each with a corresponding folder.
+#### No modifications
+python test.py --name FirstRun_Towards --att --final_loss --net vgg --count_loss --seg_loss --seg_w 100 --net vgg --soft --seg --model vgg --output_cn 2 --train_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/train.json --val_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/val.json --test_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/test.json --display_freq 100 --lr 0.00001 --downsample 8 --dmap_type fix4 --input_cn 3 --seg_lr 0.00001 --train_counter --hourglass_iter 3 --weight 10 --seg_gt_act multi --pre ./checkpoints/FirstRun_Towards/vgg_bestval.pth
+
+#### SkipConnections
+python testSkipConnection.py --name FirstRun_SkipConnection_Towards --att --final_loss --net vgg --count_loss --seg_loss --seg_w 100 --net vgg --soft --seg --model vgg --output_cn 2 --train_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/train.json --val_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/val.json --test_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/test.json --display_freq 100 --lr 0.00001 --downsample 8 --dmap_type fix4 --input_cn 3 --seg_lr 0.00001 --train_counter --hourglass_iter 3 --weight 10 --seg_gt_act multi --pre ./checkpoints/FirstRun_SkipConnection_Towards/vgg_bestval.pth
+
+#### SkipConnections
+python testAttention.py --name FirstRun_SkipConnection_Towards --att --final_loss --net vgg --count_loss --seg_loss --seg_w 100 --net vgg --soft --seg --model vgg --output_cn 2 --train_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/train.json --val_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/val.json --test_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/test.json --display_freq 100 --lr 0.00001 --downsample 8 --dmap_type fix4 --input_cn 3 --seg_lr 0.00001 --train_counter --hourglass_iter 3 --weight 10 --seg_gt_act multi --pre ./checkpoints/FirstRun_Attention_Towards/vgg_bestval.pth
+
