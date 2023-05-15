@@ -56,12 +56,12 @@ To train on different datasets change, *--train_json*, *--val_json*, *--test_jso
 
 ## Testing
 
-1. From this root make the following folders:
+1. From this root make a folder that corresponds to the name of the model in TestResults e.g.:
 '''
 ./TestResults/FirstRun_Towards
 '''
 
-2. Run the below scripts, each with a corresponding folder.
+2. Run the below scripts, each with a corresponding folder .
 #### No modifications
 ```
 python test.py --name FirstRun_Towards --att --final_loss --net vgg --count_loss --seg_loss --seg_w 100 --net vgg --soft --seg --model vgg --output_cn 2 --train_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/train.json --val_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/val.json --test_json ./Fine-Grained-Counting-Dataset/Fine-Grained-Counting-Dataset/Towards_vs_Away/annotations/test.json --display_freq 100 --lr 0.00001 --downsample 8 --dmap_type fix4 --input_cn 3 --seg_lr 0.00001 --train_counter --hourglass_iter 3 --weight 10 --seg_gt_act multi --pre ./checkpoints/FirstRun_Towards/vgg_bestval.pth
